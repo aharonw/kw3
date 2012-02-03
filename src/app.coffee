@@ -14,9 +14,14 @@ app.configure ->
 
 app.get '/', routes.index
 
-app.post '/users', routes.users
+app.get '/register', routes.register
+
+app.get '/users/:id', routes.getUser
+
+app.post '/users', routes.createUser
 
 app.post '/wings', routes.wings
+
 
 app.listen process.env.VMC_APP_PORT or config.port,
   -> console.log 'Keep Winging Server initialized'

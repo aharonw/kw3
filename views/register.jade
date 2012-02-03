@@ -1,0 +1,22 @@
+.wrapper
+  #leaderboardHeaderHolder
+    #leaderboardHeader Add new #keepwinging competitor
+    .registerForm
+      form
+        .field-label Competitor's Name
+        input#name.thisField(placeholder="El Wingador")
+        .field-label Team Name
+        input#team.thisField(placeholder="Yao Wing Dynasty")
+        .field-label RFID Number
+        input#rfidnum.thisField(placeholder="##########")
+        input#uploadPhoto(type="file")
+        input.button(type="submit")
+#footer
+  .wrapper
+    #kwLogo
+    .dataPoint
+      .dataTitle Total Wing Consumption:
+      #total.dataNumber= total
+    .dataPoint
+      .dataTitle Average Wings Per Hour:
+      .dataNumber

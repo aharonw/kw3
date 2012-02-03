@@ -1,0 +1,27 @@
+.wrapper
+  #leaderboardHeaderHolder
+    #leaderboardHeader
+      b!= user.name
+      span!= user.team
+  .bio
+    .bioPhoto
+      img(src!=user.pic)
+    .bioInfo
+      .bioName!= user.name
+      .bioTeam!= user.team
+      .bioLike
+        .rootingFor!= "Click 'like' below to root for " + user.name
+        .fb-like(data-send="false", data-layout="button_count", data-width="270", data-show-faces="false")
+  #stream
+    #streamHead #keepwinging live stream
+    each item in feedItems
+      .streamStory= item.text
+#footer
+  .wrapper
+    #kwLogo
+    .dataPoint
+      .dataTitle Total Wing Consumption:
+      #total.dataNumber= total
+    .dataPoint
+      .dataTitle Average Wings Per Hour:
+      .dataNumber

@@ -67,7 +67,7 @@ exports.wings = (req, res) ->
 
 
 
-exports.users = (req, res) ->
+exports.createUser = (req, res) ->
   { rfid } = req.body
   User.findOne rfid: rfid, (err, user) ->
     if user
@@ -81,4 +81,30 @@ exports.users = (req, res) ->
       feedItem.save()
       io.sockets.emit 'newUser', text: feedItem.text
       res.send 200
+
+
+exports.getUser = (req, res) ->
+  if req.params.id?
+    rfid = req.params.id
+  else
+    return res.send 500
+
+  async.parallel
+
+    user: (cb) ->
+      User.findOne rfid: rfid, (err, user) -> cb null, user
+
+    feedItems: (cb) ->
+      FeedItem.find(user: rfid).limit(30).sort('createdAt', -1).run (err, feedItems) -> cb null, feedItems
+
+    (err, results) ->
+      res.render 'profile', locals:
+        user: results.user
+        feedItems: results.feedItems
+        total: totalCount
+
+
+exports.register = (req, res) ->
+  res.render 'register', locals:
+    total: totalCount
 
