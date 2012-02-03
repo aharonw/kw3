@@ -1,0 +1,14 @@
+{
+    "name": "KeepWinging",
+    "description": "Keep Winging 2012 Server",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "socket.io": "0.8.x",
+        "express": "2.5.x",
+        "jade": "0.19.x",
+        "moment": "1.2.x"
+        "mongoose": "2.5.x"
+        "async": "0.1.x"
+    }
+}

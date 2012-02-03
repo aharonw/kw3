@@ -1,0 +1,21 @@
+.wrapper
+  #leaderboardHeaderHolder
+    #leaderboardHeader Live #keepwinging Leaderboard
+  ul.list
+    each user in users
+      li(class='people rfid' + user.rfid)
+        img(width='80px', src=user.pic)
+        .number= user.wings
+  #stream
+    #streamHead #keepwinging live stream
+    each item in feedItems
+      .streamStory= item.text
+#footer
+  .wrapper
+    #kwLogo
+    .dataPoint
+      .dataTitle Total Wing Consumption:
+      #total.dataNumber= total
+    .dataPoint
+      .dataTitle Average Wings Per Hour:
+      .dataNumber
