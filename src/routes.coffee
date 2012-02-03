@@ -1,4 +1,4 @@
-config   = require  __dirname + '/config'
+config   = require __dirname + '/config'
 models   = require __dirname + '/models'
 app      = require __dirname + '/app'
 mongoose = require 'mongoose'
