@@ -2,14 +2,14 @@
   #leaderboardHeaderHolder
     #leaderboardHeader Add new #keepwinging competitor
     .registerForm
-      form
+      form(method="post", enctype="multipart/form-data", action="/users")
         .field-label Competitor's Name
-        input#name.thisField(placeholder="El Wingador")
+        input#name.thisField(name="name")
         .field-label Team Name
-        input#team.thisField(placeholder="Yao Wing Dynasty")
+        input#team.thisField(name="team")
         .field-label RFID Number
-        input#rfidnum.thisField(placeholder="##########")
-        input#uploadPhoto(type="file")
+        input#rfidnum.thisField(name="rfid", value=rfid)
+        input#uploadPhoto(type="file", name="photo")
         input.button(type="submit")
 #footer
   .wrapper
