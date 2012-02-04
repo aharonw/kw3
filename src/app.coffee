@@ -6,7 +6,7 @@ routes  = require __dirname + '/routes'
 app.configure ->
   app.set 'views', __dirname + '/../views'
   app.set 'view engine', 'jade'
-  app.use express.bodyParser()
+  app.use express.bodyParser uploadDir: __dirname + '/../uploads'
   app.use express.static __dirname + '/../public'
   app.use app.router
   app.use express.errorHandler dumpExceptions: true, showStack: true
@@ -14,7 +14,7 @@ app.configure ->
 
 app.get '/', routes.index
 
-app.get '/register', routes.register
+app.get '/register/:rfid?', routes.register
 
 app.get '/users/:id', routes.getUser
 
