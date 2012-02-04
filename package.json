@@ -10,5 +10,6 @@
         "moment": "1.2.x"
         "mongoose": "2.5.x"
         "async": "0.1.x"
+        "underscore": "1.x.x"
     }
 }
