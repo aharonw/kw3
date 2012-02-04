@@ -2,7 +2,10 @@ config   = require __dirname + '/config'
 models   = require __dirname + '/models'
 app      = require __dirname + '/app'
 mongoose = require 'mongoose'
+crypto   = require 'crypto'
 async    = require 'async'
+fs       = require 'fs'
+_        = require 'underscore'
 io       = require('socket.io').listen app
 
 io.enable 'browser client minification'
@@ -71,16 +74,28 @@ exports.createUser = (req, res) ->
   { rfid } = req.body
   User.findOne rfid: rfid, (err, user) ->
     if user
-      res.send 500
+      res.send 'user with rfid exists. deal with it.'
     else
-      newUser = new User req.body
-      feedItem = new FeedItem
-        text: "#{ newUser.name } of #{ newUser.team } just joined the fight."
-        user: newUser.rfid
-      newUser.save()
-      feedItem.save()
-      io.sockets.emit 'newUser', text: feedItem.text
-      res.send 200
+      { photo } = req.files
+      temp = photo.path
+      extension = _.last photo.name.split('.')
+      hash = crypto.createHash('sha1')
+        .update(photo.name + Math.random()).digest 'hex'
+      webPath = '/images/photos/' + hash + '.' + extension
+      target = __dirname + '/../public/' + webPath
+      fs.rename temp, target, (err) ->
+        return res.send err if err
+        fs.unlink temp
+        newUser = new User req.body
+        newUser.pic = webPath
+        feedItem = new FeedItem
+          text: "#{ newUser.name } of #{ newUser.team } just joined the fight."
+          user: newUser.rfid
+        newUser.save()
+        feedItem.save()
+        io.sockets.emit 'newUser', text: feedItem.text, photo: webPath
+        res.redirect '/'
+
 
 
 exports.getUser = (req, res) ->
@@ -105,6 +120,11 @@ exports.getUser = (req, res) ->
 
 
 exports.register = (req, res) ->
+  if req.params.rfid?
+    { rfid } = req.params
+  else
+    rfid = ''
   res.render 'register', locals:
     total: totalCount
+    rfid: rfid
 
