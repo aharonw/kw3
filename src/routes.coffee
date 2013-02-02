@@ -41,23 +41,30 @@ exports.index = (req, res) ->
         users: results.users
         feedItems: results.feedItems
         total: totalCount
+        
 
-
-
-exports.wings = (req, res) ->
+exports.eat = (req, res) ->
   { rfid } = req.body
-  return res.send 500 unless rfid
+  { food } = req.body
+  return res.send 500 unless rfid and food
 
   User.findOne rfid: rfid, (err, user) ->
     return res.send 500 unless user
-    user.wings += config.wingCount
-    totalCount += config.wingCount
-    feedText = "#{ user.name } just ate #{ config.wingCount } more wings."
+    
+    inc =
+      food: food
+      time: Date.now
+      num:  getIncrement(food)
+    user.count.push inc
+    
+    totalCount = getFoodTotal user.count, food
+    feedText = "#{ user.name } just ate #{ inc.num } more wings."
 
     io.sockets.emit 'tap',
-      rfid: rfid
-      wings: user.wings
-      text: feedText
+      rfid:  rfid
+      food:  food
+      num:   inc.num
+      text:  feedText
       total: totalCount
 
     feedItem = new FeedItem
@@ -68,6 +75,15 @@ exports.wings = (req, res) ->
     feedItem.save()
     res.send 200
 
+getIncrement = (food) ->
+  if config.inc.[food]? then return config.inc.[food] else return 1
+
+getFoodTotal = (counts, food) ->
+  total = 0
+  for count in counts
+    if count.food is food
+      total += count.num
+  return total
 
 
 exports.createUser = (req, res) ->

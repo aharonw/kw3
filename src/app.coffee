@@ -20,8 +20,7 @@ app.get '/users/:id', routes.getUser
 
 app.post '/users', routes.createUser
 
-app.post '/wings', routes.wings
-
+app.post '/eat/:food', routes.eat
 
 app.listen process.env.VMC_APP_PORT or config.port,
   -> console.log 'Keep Winging Server initialized'

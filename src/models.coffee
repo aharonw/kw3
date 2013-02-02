@@ -5,10 +5,10 @@ exports.define = (mongoose, cb) ->
 
   User = new Schema
     name      : String
-    rfid      : type: String, index: true
-    pic       : String
-    wings     : type: Number, default: 0
     team      : String
+    pic       : String
+    rfid      : type: String, index: true
+    count     : [ { food: String, num: Number, time: Date } ]
     createdAt : type: Date, default: Date.now
 
   FeedItem = new Schema
