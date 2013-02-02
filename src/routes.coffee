@@ -28,7 +28,19 @@ exports.index = (req, res) ->
   async.parallel
 
     users: (cb) ->
-      User.find {}, (err, users) -> cb null, users
+      foods = ['wings', 'beer', 'brownies']
+      User.find {}, (err, users) ->
+        for user in users
+          data = []
+          for food in foods
+            f = { name: food, data: [] }
+            for count in user.counts
+              if count.food is food
+                f.data.push count
+            data.push f
+          user.data = data
+          console.log user
+        cb null, users
 
     feedItems: (cb) ->
       FeedItem.find().limit(30).sort('createdAt', -1).run (err, feedItems) -> cb null, feedItems
@@ -50,14 +62,15 @@ exports.eat = (req, res) ->
 
   User.findOne rfid: rfid, (err, user) ->
     return res.send 500 unless user
-    
+
     inc =
       food: food
-      time: Date.now
+      time: Date.now()
       num:  getIncrement(food)
-    user.count.push inc
-    
-    totalCount = getFoodTotal user.count, food
+      
+    user.counts.push inc
+    console.log inc
+    totalCount = getFoodTotal user.counts, food
     feedText = "#{ user.name } just ate #{ inc.num } more wings."
 
     io.sockets.emit 'tap',
@@ -107,6 +120,7 @@ exports.createUser = (req, res) ->
         feedItem = new FeedItem
           text: "#{ newUser.name } of #{ newUser.team } just joined the fight."
           user: newUser.rfid
+        console.log newUser
         newUser.save()
         feedItem.save()
         io.sockets.emit 'newUser', text: feedItem.text, photo: webPath

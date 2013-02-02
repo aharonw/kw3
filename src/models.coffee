@@ -8,7 +8,8 @@ exports.define = (mongoose, cb) ->
     team      : String
     pic       : String
     rfid      : type: String, index: true
-    count     : [ { food: String, num: Number, time: Date } ]
+    counts    : [ { food: String, num: Number, time: Date } ]
+    data      : []
     createdAt : type: Date, default: Date.now
 
   FeedItem = new Schema
