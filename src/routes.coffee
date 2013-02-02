@@ -76,7 +76,7 @@ exports.eat = (req, res) ->
     res.send 200
 
 getIncrement = (food) ->
-  if config.inc.[food]? then return config.inc.[food] else return 1
+  if config.inc[food]? then return config.inc[food] else return 1
 
 getFoodTotal = (counts, food) ->
   total = 0
