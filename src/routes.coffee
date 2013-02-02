@@ -39,7 +39,6 @@ exports.index = (req, res) ->
                 f.data.push count
             data.push f
           user.data = data
-          console.log user
         cb null, users
 
     feedItems: (cb) ->
@@ -71,7 +70,7 @@ exports.eat = (req, res) ->
     user.counts.push inc
     console.log inc
     totalCount = getFoodTotal user.counts, food
-    feedText = "#{ user.name } just ate #{ inc.num } more wings."
+    feedText = "#{ user.name } just ate #{ inc.num } more #{ food }."
 
     io.sockets.emit 'tap',
       rfid:  rfid
