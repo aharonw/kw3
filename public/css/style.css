@@ -344,3 +344,11 @@ li.box a span {
 	width: 350px;
 	font-size: 16px;
 }
+
+#page-title{
+	float: left;
+}
+
+#metric-select{
+	float: right;
+}
