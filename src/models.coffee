@@ -1,4 +1,3 @@
-
 exports.define = (mongoose, cb) ->
   Schema = mongoose.Schema
   ObjectId = Schema.ObjectId
@@ -8,7 +7,7 @@ exports.define = (mongoose, cb) ->
     team      : String
     pic       : String
     rfid      : type: String, index: true
-    counts    : [ { food: String, num: Number, time: Date } ]
+    counts    : [food: String, num: Number, time: Date]
     data      : []
     createdAt : type: Date, default: Date.now
 
@@ -20,4 +19,4 @@ exports.define = (mongoose, cb) ->
   mongoose.model 'User', User
   mongoose.model 'FeedItem', FeedItem
 
-  cb? and cb()
+  cb?()
