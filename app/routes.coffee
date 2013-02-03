@@ -29,34 +29,21 @@ exports.index = (req, res) ->
 
     users: (cb) ->
       foods = ['wings', 'beer', 'brownies']
-      User.find {}, (err, users) ->
-        for user in users
-          data = []
-          for food in foods
-            f = { name: food, data: [] }
-            for count in user.counts
-              if count.food is food
-                f.data.push count
-            data.push f
-          user.data = data
-        cb null, users
+      User.sumTotals (err, userTotals, totals) ->
+        cb null, { users: userTotals, totals: totals }
 
     feedItems: (cb) ->
       FeedItem.find().limit(30).sort('createdAt', -1).run (err, feedItems) -> cb null, feedItems
 
     (err, results) ->
-      totalCount = results.users.map((user) -> user.wings).reduce (prev, current) ->
-        prev + current
-
       res.render 'index', locals:
-        users: results.users
+        users: results.users.users
         feedItems: results.feedItems
-        total: totalCount
+        totals: results.users.totals
         
 
 exports.eat = (req, res) ->
-  { rfid } = req.body
-  { food } = req.body
+  {rfid, food} = req.body
   return res.send 500 unless rfid and food
 
   User.findOne rfid: rfid, (err, user) ->
