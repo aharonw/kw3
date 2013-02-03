@@ -57,7 +57,8 @@ exports.eat = (req, res) ->
     user.counts.push inc
     console.log inc
     totalCount = getFoodTotal user.counts, food
-    feedText = "#{ user.name } just ate #{ inc.num } more #{ food }."
+    verb = if food is 'beer' then 'drank' else 'ate'
+    feedText = "#{ user.name } just #{ verb } #{ inc.num } more #{ food }."
 
     io.sockets.emit 'tap',
       rfid:  rfid
