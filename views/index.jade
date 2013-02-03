@@ -1,11 +1,18 @@
 .wrapper
   #leaderboardHeaderHolder
-    #leaderboardHeader Live #keepwinging Leaderboard
+    #leaderboardHeader 
+      p#page-title Live #keepwinging Leaderboard
+      select#metric-select
+        option(value='all') All
+        option(value='wings') Wings
+        option(value='beer') Beer
+        option(value='brownies') Brownies
+      
   ul.list
     each user in users
-      li(class='people rfid' + user.rfid)
+      li(class='people rfid' + user.rfid, data-all=user.all || 0, data-wings=user.wings || 0, data-beer=user.beer || 0, data-brownies=user.brownies || 0)
         img(width='80px', src=user.pic)
-        .number= user.wings
+        .number= user.all || 0
   #stream
     #streamHead #keepwinging live stream
     each item in feedItems
@@ -14,8 +21,14 @@
   .wrapper
     #kwLogo
     .dataPoint
-      .dataTitle Total Wing Consumption:
-      #total.dataNumber= total
+      .dataTitle Total:
+      #total-all.dataNumber= totals.all
     .dataPoint
-      .dataTitle Average Wings Per Hour:
-      .dataNumber
+      .dataTitle Wings:
+      #total-wings.dataNumber= totals.wings || 0
+    .dataPoint
+      .dataTitle Beer:
+      #total-beer.dataNumber= totals.beer || 0
+    .dataPoint
+      .dataTitle Brownies:
+      #total-brownies.dataNumber= totals.brownies || 0
